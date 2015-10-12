@@ -1,0 +1,8 @@
+{
+	"name": "intera-typo3-extension/realurl",
+	"description": "Creates nice looking URLs for TYPO3 pages: converts http://example.com/index.phpid=12345&L=2 to http://example.com/path/to/your/page/. Please, ask for free support in TYPO3 mailing lists or contact the maintainer for paid support.",
+	"type": "typo3-cms-extension",
+	"suggest": {
+		"static_info_tables": "Can be used for fetching language labels."
+	}
+}
