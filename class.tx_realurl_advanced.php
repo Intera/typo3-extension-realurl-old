@@ -352,14 +352,8 @@ class tx_realurl_advanced {
 	 * @param int $lang
 	 * @return array
 	 */
-	protected function IDtoPagePathThroughOverride($id, $mpvar, $lang) {
+	protected function IDtoPagePathThroughOverride($id, /** @noinspection PhpUnusedParameterInspection */ $mpvar, $lang) {
 		$result = false;
-
-		// If we are inside a mount mount we must never override the whole path.
-		if ($mpvar !== '') {
-			return $result;
-		}
-
 		$page = $this->getPage($id, $lang);
 		if ($page['tx_realurl_pathoverride']) {
 			if ($page['tx_realurl_pathsegment']) {
@@ -542,7 +536,7 @@ class tx_realurl_advanced {
 		}
 		if ($rootFound) {
 			// Translate the rootline to a valid path (rootline contains localized titles at this point!)
-			$pagePath = $this->rootLineToPath($newRootLine, $langID, $mpvar);
+			$pagePath = $this->rootLineToPath($newRootLine, $langID);
 			$this->pObj->devLog('Got page path', array('uid' => $id, 'pagepath' => $pagePath));
 			$rootPageId = $this->conf['rootpage_id'];
 			if ($innerSubDomain) {
@@ -580,11 +574,10 @@ class tx_realurl_advanced {
 	 *
 	 * @param array $rl Rootline array for the current website (rootLine from TSFE->tmpl->rootLine but with modified localization according to language of the URL)
 	 * @param int $lang Language identifier (as in sys_languages)
-	 * @param string $mpvar MP variable string
 	 * @return string Path for the page, eg.
 	 * @see IDtoPagePathSegments()
 	 */
-	protected function rootLineToPath($rl, $lang, $mpvar) {
+	protected function rootLineToPath($rl, $lang) {
 		$paths = array();
 		array_shift($rl); // Ignore the first path, as this is the root of the website
 		$c = count($rl);
@@ -636,10 +629,6 @@ class tx_realurl_advanced {
 							$theTitle = $page[$fieldName];
 							break;
 						}
-					}
-
-					if ($page['tx_realurl_pathoverride'] && $mpvar === '') {
-						$paths = array();
 					}
 
 					$paths[$i] = $this->encodeTitle($theTitle);
